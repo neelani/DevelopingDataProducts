@@ -1,0 +1,102 @@
+---
+title: "Wine Quality Cluster Analysis"
+author: "neelani"
+date: "June 25, 2017"
+output:
+  html_document: default
+  pdf_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Project Background
+
+Perform a clustering analysis to understand and classify the quality of the Wines.
+
+
+## Data 
+
+The data for this project is available here:
+Data Source:  (http://archive.ics.uci.edu/ml/datasets/Wine+Quality)
+
+### Available Attributes
+- 1 - fixed acidity 
+- 2 - volatile acidity 
+- 3 - citric acid 
+- 4 - residual sugar 
+- 5 - chlorides 
+- 6 - free sulfur dioxide 
+- 7 - total sulfur dioxide 
+- 8 - density 
+- 9 - pH 
+- 10 - sulphates 
+- 11 - alcohol
+
+## Model Design Approach
+
+Create reactive R-Shiny web application to accept the input paratmeters listed as follows, perform the k-means clustering and prodce the scatter plot
+
+- Number of Clusters
+- Attributes Selection for Clustering 
+
+
+### Read the data 
+
+```{r data}
+wine <- read.csv("WineStudy/winequality-red.csv", header=TRUE, sep=";")
+```
+
+### Initialize the variables - Simulate the web input
+
+- Number of Clusters - 4
+- Attributes Selected - Density and Alcohol
+
+```{r init}
+
+  no_cl <- 4
+  x1 <- FALSE
+  x2 <- FALSE
+  x3 <- FALSE
+  x4 <- FALSE
+  x5 <- FALSE
+  x6 <- FALSE
+  x7 <- FALSE
+  x8 <- TRUE
+  x9 <- FALSE
+  x10 <- FALSE
+  x11 <- TRUE
+  x12 <- FALSE
+
+```  
+
+### K-means clustering 
+
+```{r cluster}  
+  colsel <- c(x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11, x12)
+  
+  wine_sel <- wine[, colsel]
+  
+  set.seed(1234)
+  cl<-kmeans(wine_sel,  no_cl)
+    
+```
+
+### Selected attributes summary
+
+```{r sum, echo = TRUE}
+
+summary(wine_sel)
+
+```
+
+
+### Plot the clusters
+
+```{r plot, echo = TRUE}
+
+# Plot Cluster Means 
+plot(wine_sel, col=cl$cluster)
+
+```
